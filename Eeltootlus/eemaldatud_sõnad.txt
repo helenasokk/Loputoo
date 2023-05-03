@@ -1,0 +1,68 @@
+Eemaldatud sõnad:
+kerged.yaml
+-erootiline
+-kondoom
+-neeger
+-orgasm
+-peenis
+-prostituut
+-seks
+-seksima
+-seksuaalne
+-seksuaalsus
+-uriin
+-vibraator
+
+keskmised.yaml
+-anaalne
+-aseksuaalne
+- biseksuaal
+- biseksuaalne
+- biseksuaalsus
+- debiilik
+- debiilne
+- debiilsus
+- frits
+- genitaalid
+- heteroseksuaal
+- heteroseksuaalne
+- heteroseksuaalsus
+- homoseksuaal
+- homoseksuaalne
+- homoseksuaalsus
+- impotent
+- IUCN
+- libiido
+- menopaus
+- menstruaaltsükkel
+- menstruatsioon
+- ovulatsioon
+- pederast
+- peer
+- penetratsioon
+- perversne
+- perverssus
+- pervert
+- pornograafia
+- pornograafiline
+- sodoomia
+- sperm
+- sperma
+- strippar
+- striptiis
+- tampoon
+- transseksuaal
+- transseksuaalne
+- transvestiit
+- urineerima
+- vagiina
+- vaginaalne
+- vasektoomia
+
+rasked.yaml
+- hüperseksuaalsus
+- küberseks
+- seksapiilne
+- seksapiilsus
+- transseksuaalsus
+- transvestism
