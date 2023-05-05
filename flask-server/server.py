@@ -20,7 +20,7 @@ rasked = []
 with open('saveRasked.pickle', 'rb') as handle:
     rasked = pickle.load(handle)
 # laen laused pickle-failist sisse
-# testimiseks kasutan ainult kergeid ja keskmisi võõrsõnu
+# kasutan ainult kergeid ja keskmisi võõrsõnu
 laused = {}
 with open('saveLaused.pickle', 'rb') as handle:
     laused = pickle.load(handle)
@@ -29,12 +29,14 @@ paarid = []# sarnaste võõrsõnade paarid, mis on vajalikud teise mängu jaoks
 with open('savePaarid.pickle', 'rb') as handle:
     paarid = pickle.load(handle)
 
+# funktsioon võõrsõna õige vormi leidmiseks
 def leiaVorm(vasak, parem, sona):
     tulemus = ""
+    # Moodustan lause
     tekst = Text(str(vasak + " " + sona + " " + parem))
     lemmad = tekst.tag_layer().morph_analysis.lemma
     sonaLemmana = Text(sona).tag_layer().morph_analysis.lemma[0][0]
-    vormid = tekst.tag_layer().morph_analysis.form
+    vormid = tekst.tag_layer().morph_analysis.form # leian lause kõikide sõnade vormid
     i = 0
     for i in range(len(vormid) - 1):
         if (lemmad[i][0] == sonaLemmana):
@@ -42,7 +44,9 @@ def leiaVorm(vasak, parem, sona):
         i += 1
     return tulemus
 
+# Funktsioon võõrsõna valdkonna leidmiseks
 def leiaValdkond(valdkond):
+    # Kõik eksisteerivad valdkonnad ühes sõnastikus
     valdkonnad = {'aiand': 'aiandus', 'aj': 'ajalugu', 'anat': 'anatoomia', 'antr': 'antropoloogia',
                   'arheol': 'arheoloogia', 'arhit': 'arhitektuur','astr': 'astronoomia', 'bibl': 'bibliograafia',
                   'biol': 'bioloogia', 'bot': 'botaanika', 'dipl': 'diplomaatia', 'eh': 'ehitus', 'el': 'elektroonika',
@@ -62,18 +66,20 @@ def leiaLause(sõna):
     if sõna not in laused.keys():
         return ("","")
     lauseOsad = laused[sõna][random.randint(0, len(laused[sõna]) - 1)]
+    # Tagastan lause, kus võõrsõna koht on tühjaks jäetud
     return (lauseOsad[0] + " __ " + lauseOsad[1], lauseOsad[-1])
 
+# Funktsioon, mis tagastab võõrsõnale vastavad vihjed
 def leiaVihjed(sõna):
     sonavormid = {'S': 'nimisõnaga', 'V': 'tegusõnaga', 'A': 'omadussõnaga', 'P': 'asesõnaga', 'N': 'põhiarvsõnaga', 
                   'I': 'hüüdsõnaga', 'J': 'sidesõnaga', 'G': 'omastavalise täiendiga', 'D': 'määrsõnaga'}
     # Lisan kõik vihjed eraldi nimekirja ja leian kui palju vihjeid on kokku
     nimekiri = []
-    #vormid = []
+    # Esimese vihjena antakse ette, mis on selle võõrsõna vorm ning millisesse valdkonda kuulub
     if sõnastik[sõna][0] != "" and sõnastik[sõna][3] != "":
         nimekiri.append("Selle sõna valdkond on "+ leiaValdkond(sõnastik[sõna][0])+". " + "Tegemist on "+ sonavormid[sõnastik[sõna][3]]+".\n")
-        #if sõnastik[sõna][3] not in vormid:
-        #    vormid.append(sõnastik[sõna][3])
+    # Teise vihjena antakse võõrsõna definitsioon(id)
+    # Kui definitsioone on mitu, siis kuvatakse vihjed üksteise alla
     if type(sõnastik[sõna][1]) is list:
         tulemuse = "Selle võõrsõna definitsioonid on:\n"
         for t in sõnastik[sõna][1]:
@@ -84,6 +90,7 @@ def leiaVihjed(sõna):
             t = t.replace(" v ", " või ")
             tulemuse += " *" + t + "\n"
         nimekiri.append(tulemuse)
+    # Kui definitsioone on ainult üks, siis kuvatakse ühe lausena
     elif type(sõnastik[sõna][1]) is str:
         sõnastik[sõna][1] = sõnastik[sõna][1].replace(" vm ", " või muu ")
         sõnastik[sõna][1] = sõnastik[sõna][1].replace(" a-ni ", " aastani ")
@@ -91,18 +98,22 @@ def leiaVihjed(sõna):
         sõnastik[sõna][1] = sõnastik[sõna][1].replace(" hrl ", " harilikult ")
         sõnastik[sõna][1] = sõnastik[sõna][1].replace(" v ", " või ")
         nimekiri.append("Selle võõrsõna definitsioon on: "+sõnastik[sõna][1]+".\n")
+    # Kui sõnastikus on olemas vastandsõna, siis lisatakse ka see vihjete hulka
     if sõnastik[sõna][2] != "":
         nimekiri.append("Selle sõna vastandsõna on "+ sõnastik[sõna][2]+".\n")
+    # Lisan vihjena ka sõna algustähe
     nimekiri.append("See sõna algab "+sõna[0].upper()+" tähega.\n")
+    # Lisan vihjena ka sõna pikkuse
     nimekiri.append("Selle võõrsõna pikkus on "+ str(len(sõna))+ " tähte.\n")
+    # Viimasena lisan ühe näidislause
     lause, oigesKaandes = leiaLause(sõna)
     nimekiri.append("Mul on sulle üks näidislause:\n" + lause + "\n")
-    #print(vormid)
     return (oigesKaandes, nimekiri)
 
+# Esimese mängu jaoks vajalikud andmed küsitakse siit
 @app.route("/keskmmang1")
 def mang1():
-    # Võtan sõnastikust välja 5 sõna ja nendega seotud vihjet testimiseks
+    # Võtan sõnastikust välja 5 kerget sõna ja nendega seotud vihjet testimiseks
     sonad = []
     kogutud = []
     for i in range(5):
@@ -115,6 +126,7 @@ def mang1():
         lisa = {"sõna": [sona, oigesKaandes], "raskus": "kerge", "vihjeteNkr": vihjed}
         sonad.append(lisa)
         i+=1
+    # Võtan sõnastikust välja 5 keskmist sõna ja nendega seotud vihjet testimiseks
     kogutud2 = []
     for j in range(5):
         while True:
@@ -128,6 +140,7 @@ def mang1():
         j+=1
     return sonad
 
+# Teise mängu jaoks vajalikud andmed küsitakse siit
 @app.route("/keskmmang2")
 def mang2():
     sonad = []
@@ -181,6 +194,7 @@ def leiaSamastValdkonnast(valdkond):
             kokku.append(key)
     return kokku
 
+# Kolmanda mängu jaoks vajalikud andmed küsitakse siit
 @app.route("/keskmmang3")
 def mang3():
     # Kolmanda mängu jaoks on vaja valida üks valdkond
@@ -194,9 +208,8 @@ def mang3():
     while True:
         valdkond = valdkonnad[random.randint(0, len(valdkonnad)-1)]
         sobivadSõnad = leiaSamastValdkonnast(valdkond)
-        if len(sobivadSõnad) > 6:
+        if len(sobivadSõnad) > 6:# valdkond sobib ainult siis, kui sõnu sellest valdkonnast on vähemalt 6
             break
-    # võtame sõnad kergete seast, sest laused on hetkel ainult kergetele olemas
     sõnad = []
     vastus = []
     sõna = sobivadSõnad[random.randint(0, len(sobivadSõnad)-1)]
