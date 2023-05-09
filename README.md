@@ -11,6 +11,7 @@ Kasutajaliidese ehk *front-end*'i kood asub siin: https://github.com/helenasokk/
 * 'saveLaused.pickle' - võõrsõnadele vastavaid lauseid sisaldav fail, igale võõrsõnale on kogutud 20 lauset.
 # Eeltöötluse jaoks vajalikud failid:
 * 'eeltootlus.py' - mängude jaoks vajalik eeltöötlus: võõrsõnade eraldamine võõrsõnade leksikonist koos vihjetega, võõrsõnade raskusastmetesse grupeerimine, sarnaste võõrsõnapaaride loomine.
+* 'failide_vahetus.py' - selleks, et pickle-faile yaml-failideks konverteerida ning vastupidine tegevus (kui on vaja kontrollida ebasobivaid sõnu)
 * 'importLaused.py' - SketchEngine'ist võõrsõnu sisaldavate lausete pärimine ja pickle-failidesse salvestamine.
 * 'mergeSonastikud.py' - Liidab mitmesse pickle-faili salvestatud sõnastikud üheks terveks (lauseid sisaldavad).
 # Serveri tööks vajalikud moodulid koos käskudega:
@@ -25,7 +26,7 @@ Eelnevalt on vaja läbi jooksutada fail 'eeltootlus.py', mis loob:
 * võõrsõnade raskusgrupid ning salvestab need failidesse 'saveKerged.pickle', 'saveKeskm.pickle' ja 'saveRasked.pickle'; 
 * ning sarnaste võõrsõnade paarid ja salvestab need faili 'savePaarid.pickle'.
 
-Kindlasti tuleks lugeda eeltöötluse failis olevaid kommentaare, sest enne sarnaste võõrsõnade paaride loomist tuleks eemaldada kõikidest raskusgruppide failidest ebasobivad sõnad, mis on välja toodud failis 'eemaldatud_sõnad.txt'.
+Kindlasti tuleks lugeda eeltöötluse failis olevaid kommentaare, sest enne sarnaste võõrsõnade paaride loomist tuleks eemaldada kõikidest raskusgruppide failidest ebasobivad sõnad, mis on välja toodud failis 'eemaldatud_sõnad.txt'. Selleks võite jooksutada faili 'failide_vahetus.py', mis muudab pickle-failid yaml-failideks. Seejärel saate ebasobivad sõnad eemaldada ning tagasi pickle-failidesse salvestada.
 
 **NB!** Projektis on kasutatud EKI Eesti keele ühendkorpuse 2021 lemmade ja sõnavormide sagedusloendit (sageduse järgi), mille litsents on leitav [siit](https://eki.ee/eki/litsents.html).
 
