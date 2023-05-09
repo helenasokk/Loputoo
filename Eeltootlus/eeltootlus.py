@@ -20,7 +20,7 @@ sõnastik_frq = {sona: vaste for sona, vaste in sõnad}
 # sisu tähistatud 'S' - kogu definitsioonide ja seletuste plokk on selle sees
 # sõna seletus tähisega 'd' - siit saan kõik vajalikud võõrsõna seletused/definitsioonid
 # 'v' tähis näitab sõna valdkonda - nt AJ on ajalugu, KEEM on keemia jne
-'''tulemused = []
+tulemused = []
 filename = "vsl_EKI_CCBY40.xml"
 with open(filename, 'r', encoding="utf-8") as f:
     data = f.readlines()
@@ -87,7 +87,7 @@ for key in sõnastik.keys():
       rasked.append(key)
 print(len(kerged))
 print(len(keskmised))
-print(len(rasked))'''
+print(len(rasked))
 def levenshtein(s1, s2):
     if len(s1) > len(s2):
         s1, s2 = s2, s1
@@ -116,18 +116,12 @@ with open('saveSonastik.pickle', 'rb') as handle:
 
 paarid = []
 keys = kerged + keskmised + rasked
-#keys = list(sõnastik.keys())
-#print(keys)
 for idx, a in enumerate(keys):
   for b in keys[idx + 1:]:
-    #print(keys[i])
-    #if keys[idx] not in rasked and b not in rasked:
     if len(keys[idx]) > 4 and len(b) > 4:
-        #print(keys[idx])
-        #if keys[idx] in sõnastik_frq.keys() and b in sõnastik_frq.keys():
         if ((keys[idx][:3] == b[:3]) or (keys[idx][3:] == b[3:])) and sõnastik[keys[idx]][3] == sõnastik[b][3]:
           kaugus = levenshtein(keys[idx], b)
-          if kaugus >= 1 and kaugus < 3: #and sõnastik[keys[idx]][0] == sõnastik[b][0]: #kui kaugus on 1, siis tuleb u 410 paari, kui kaugus väiksem 4st suurem või võrdne 1ga -> 4718 paari ja paljud nendest on päris ebaloogilised
+          if kaugus >= 1 and kaugus < 3: # #kui kaugus on 1, siis tuleb u 410 paari, kui kaugus väiksem 4st suurem või võrdne 1ga -> 4718 paari ja paljud nendest on päris ebaloogilised
             paarid.append([keys[idx], b])
 
 '''with open('saveSonastik.pickle', 'wb') as handle:
