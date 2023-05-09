@@ -1,4 +1,5 @@
 Kasutajaliidese ehk *front-end*'i kood asub siin: https://github.com/helenasokk/Loputoo_front-end
+**NB!** Enne tuleks läbi teha allpool välja toodud juhised ja alles siis suunduda kasutajaliidese juurde.
 # Serveri tööks vajalikud failid:
 * '21_lemmad_frq.txt' - lemmade sagedussõnastik.
 * 'saveKerged.pickle' - kergete raskusgruppi kuuluvad võõrsõnad.
